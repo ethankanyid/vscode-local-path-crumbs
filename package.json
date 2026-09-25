@@ -1,0 +1,17 @@
+{
+  "name": "local-path-crumbs",
+  "displayName": "Local Path Crumbs",
+  "description": "Show the current workspace folder in one status bar item and open VS Code's folder picker when clicked.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ]
+}
