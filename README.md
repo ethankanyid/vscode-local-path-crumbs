@@ -28,10 +28,10 @@ For future updates, increase the `version` in `package.json`, run the Docker com
 
 ## Behavior
 
-- With no folder open, the status item says **Open Folder**.
+- With no folder open, the status item says **Open Folder** and clicking it opens the user's home directory in the operating system's file browser.
 - With one workspace folder open, the item shows its full path, except folders inside the user's home directory use `~/...` (for example, `~/Projects/demo`).
-- With a multi-root workspace, the item says **Multiple Folders** and shows the paths in its tooltip.
-- Click the status item to run VS Code's built-in **Open Folder** command. The normal VS Code folder picker appears; choosing a folder opens it in the current window.
+- With a multi-root workspace, the item says **Multiple Folders** and shows the paths in its tooltip. Clicking it opens the first workspace folder in the file browser.
+- Click the status item to reveal the current workspace folder in the operating system's file browser.
 
 ## Undo the trial
 

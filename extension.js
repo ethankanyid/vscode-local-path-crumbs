@@ -2,12 +2,12 @@ const os = require('os');
 const path = require('path');
 const vscode = require('vscode');
 
-const OPEN_FOLDER_COMMAND = 'vscode.openFolder';
+const REVEAL_CURRENT_PATH_COMMAND = 'localPathCrumbs.revealCurrentPath';
 
 /** @param {vscode.ExtensionContext} context */
 function activate(context) {
   const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 10000);
-  item.command = OPEN_FOLDER_COMMAND;
+  item.command = REVEAL_CURRENT_PATH_COMMAND;
   item.show();
 
   const update = () => {
@@ -15,13 +15,13 @@ function activate(context) {
 
     if (folders.length === 0) {
       item.text = '$(folder-opened) Open Folder';
-      item.tooltip = 'Click to open a folder in VS Code';
+      item.tooltip = 'Click to open your home directory in the file browser';
       return;
     }
 
     if (folders.length > 1) {
       item.text = `$(folder-library) Multiple Folders (${folders.length})`;
-      item.tooltip = `This workspace contains multiple folders:\n${folders.map((folder) => folder.uri.fsPath).join('\n')}\n\nClick to open a folder`;
+      item.tooltip = `This workspace contains multiple folders:\n${folders.map((folder) => folder.uri.fsPath).join('\n')}\n\nClick to open the first folder in the file browser`;
       return;
     }
 
@@ -32,11 +32,18 @@ function activate(context) {
       : undefined;
 
     item.text = homeRelativePath === undefined ? folderPath : homeRelativePath;
-    item.tooltip = `${folder.name}\n${folderPath}\n\nClick to open a different folder`;
+    item.tooltip = `${folder.name}\n${folderPath}\n\nClick to open this folder in the file browser`;
   };
 
   context.subscriptions.push(
     item,
+    vscode.commands.registerCommand(REVEAL_CURRENT_PATH_COMMAND, () => {
+      const folder = vscode.workspace.workspaceFolders?.[0];
+      const target = folder?.uri.scheme === 'file'
+        ? folder.uri
+        : vscode.Uri.file(os.homedir());
+      return vscode.commands.executeCommand('revealFileInOS', target);
+    }),
     vscode.workspace.onDidChangeWorkspaceFolders(update)
   );
 
